@@ -3,6 +3,7 @@ from collections import namedtuple, defaultdict
 from enum import Enum
 from itertools import product
 from gym import Env
+from gym import Wrapper
 import gym
 from gym.utils import seeding
 import numpy as np
@@ -176,7 +177,7 @@ class ForagingEnv(Env):
         env.field = np.copy(obs.field)
         env.current_step = obs.current_step
         env.sight = obs.sight
-        env._gen_valid_moves()
+        env.gen_valid_moves()
 
         return env
 
@@ -196,7 +197,7 @@ class ForagingEnv(Env):
     def game_over(self):
         return self._game_over
 
-    def _gen_valid_moves(self):
+    def gen_valid_moves(self):
         self._valid_actions = {
             player: [
                 action for action in Action if self._is_valid_action(player, action)
@@ -377,7 +378,7 @@ class ForagingEnv(Env):
             current_step=self.current_step,
         )
 
-    def _make_gym_obs(self):
+    def make_gym_obs(self):
         def make_obs_array(observation):
             obs = np.zeros(self.observation_space[0].shape, dtype=np.float32)
             # obs[: observation.field.size] = observation.field.flatten()
@@ -469,12 +470,8 @@ class ForagingEnv(Env):
         
         return nobs, nreward, ndone, ninfo
 
-    def reset(self, field_size=-1):
-        print("\n\n\n-----------RESET-----------\n\n\n")
-        if field_size != -1:
-            self.field = np.zeros(field_size, np.int32)
-        else:
-            self.field = np.zeros(self.field_size, np.int32)
+    def reset(self):
+        self.field = np.zeros(self.field_size, np.int32)
         self.spawn_players(self.max_player_level)
         player_levels = sorted([player.level for player in self.players])
 
@@ -483,9 +480,9 @@ class ForagingEnv(Env):
         )
         self.current_step = 0
         self._game_over = False
-        self._gen_valid_moves()
+        self.gen_valid_moves()
 
-        nobs, _, _, _ = self._make_gym_obs()
+        nobs, _, _, _ = self.make_gym_obs()
         return nobs
 
     def step(self, actions):
@@ -573,12 +570,12 @@ class ForagingEnv(Env):
         self._game_over = (
             self.field.sum() == 0 or self._max_episode_steps <= self.current_step
         )
-        self._gen_valid_moves()
+        self.gen_valid_moves()
 
         for p in self.players:
             p.score += p.reward
 
-        return self._make_gym_obs()
+        return self.make_gym_obs()
 
     def _init_render(self):
         from .rendering import Viewer
