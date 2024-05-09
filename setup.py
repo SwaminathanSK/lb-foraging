@@ -5,7 +5,7 @@ setup(
     version="1.1.2",
     description="Level Based Foraging Environment",
     author="Swaminathan S K",
-    url="https://github.com/semitable/lb-foraging",
+    url="https://github.com/SwaminathanSK/lb-foraging",
     packages=find_packages(exclude=["contrib", "docs", "tests"]),
     classifiers=[
         "Intended Audience :: Developers",
