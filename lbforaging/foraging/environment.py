@@ -85,7 +85,9 @@ class ForagingEnv(Env):
         normalize_reward=True,
         grid_observation=False,
         penalty=0.0,
-    ):
+    ):  
+        
+        print("\n\n\n-------------------------------------REACHED HERE----------------------------------\n\n\n")
         self.logger = logging.getLogger(__name__)
         self.seed()
         self.players = [Player() for _ in range(players)]
