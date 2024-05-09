@@ -88,7 +88,6 @@ class ForagingEnv(Env):
         penalty=0.0,
     ):  
         
-        print("\n\n\n-------------------------------------REACHED HERE----------------------------------\n\n\n")
         self.logger = logging.getLogger(__name__)
         self.seed()
         self.players = [Player() for _ in range(players)]
@@ -581,7 +580,7 @@ class ForagingEnv(Env):
         from .rendering import Viewer
 
         self.viewer = Viewer((self.rows, self.cols))
-        self._rendering_initialized = True
+        self._rendering_initialized = True # Changed
 
     def render(self, mode="human"):
         if not self._rendering_initialized:
