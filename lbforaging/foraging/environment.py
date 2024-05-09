@@ -470,6 +470,7 @@ class ForagingEnv(Env):
         return nobs, nreward, ndone, ninfo
 
     def reset(self, field_size=-1):
+        print("\n\n\n-----------RESET-----------\n\n\n")
         if field_size != -1:
             self.field = np.zeros(field_size, np.int32)
         else:
