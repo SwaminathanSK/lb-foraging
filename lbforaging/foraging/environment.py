@@ -467,8 +467,11 @@ class ForagingEnv(Env):
         
         return nobs, nreward, ndone, ninfo
 
-    def reset(self):
-        self.field = np.zeros(self.field_size, np.int32)
+    def reset(self, field_size=-1):
+        if field_size != -1:
+            self.field = np.zeros(field_size, np.int32)
+        else:
+            self.field = np.zeros(self.field_size, np.int32)
         self.spawn_players(self.max_player_level)
         player_levels = sorted([player.level for player in self.players])
 
